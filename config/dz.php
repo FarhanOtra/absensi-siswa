@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => 'SMKN 7 PADANG',
+    'name' => 'SCAN',
 
 
     'public' => [

@@ -50,7 +50,7 @@ class PasswordController extends Controller
     
     public function edit()
     {
-        $page_title = 'Change Password';
+        $page_title = 'Tukar Password';
         $action = 'index';
 		
         return view('auth.passwords.change', compact('page_title','action'));
@@ -75,6 +75,6 @@ class PasswordController extends Controller
             'password' => Hash::make($request['password']),
         ])->save();
 
-        return redirect()->route('index')->with('toast_success','Berhasil Reset Password');
+        return redirect()->route('index')->with('toast_success','Berhasil Menukar Password');
     }
 }

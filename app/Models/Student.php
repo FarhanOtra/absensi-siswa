@@ -16,25 +16,26 @@ class Student extends Model
         'name',
         'gender',
         'classroom_id',
+        'parent_number',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
-    public function classroom()
+    public function student_classroom()
     {
-        return $this->belongsTo(Classroom::class);
+        return $this->belongsTo(Student_classroom::class,'user_id','student_id');
     }
 
-    public function student_attendance()
-    {
-        return $this->belongsTo(Student_attendance::class,'user_id','student_id');
-    }
+    // public function student_attendance()
+    // {
+    //     return $this->belongsTo(Student_attendance::class,'user_id','student_id');
+    // }
 
-    public function attendance()
-    {
-        return $this->belongsToMany(Attendance::class, 'student_attendances','student_id','attendance_id','user_id','id');
-    }
+    // public function attendance()
+    // {
+    //     return $this->belongsToMany(Attendance::class, 'student_attendances','student_id','attendance_id','user_id','id');
+    // }
 }

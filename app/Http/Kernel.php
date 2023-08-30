@@ -41,6 +41,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
@@ -66,5 +67,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'teacher' => \App\Http\Middleware\IsTeacher::class,
         'no-student' => \App\Http\Middleware\IsNotStudent::class,
+        'lock' => \App\Http\Middleware\LockScreen::class,
+        'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
     ];  
 }

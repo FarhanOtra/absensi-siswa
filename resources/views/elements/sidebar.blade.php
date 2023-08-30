@@ -4,7 +4,7 @@
                     <li>
                         <a href="{{ route('index') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Dashboard</span>
+							<span class="nav-text">Absensi Hari Ini</span>
 						</a>
 					</li>
                     <li>
@@ -12,25 +12,48 @@
 							<i class="flaticon-381-list-1"></i>
 							<span class="nav-text">Absensi</span>
 						</a>
+                        @can('admin')
                         <ul aria-expanded="false">
 							<li><a href="{{ route('attendances.create') }}" class="ai-icon"><i class="flaticon-381-add"></i><span class="nav-text">Tambah Absensi</span></a></li>
 						</ul>
+                        @endcan
                         <ul aria-expanded="false">
-							<li><a href="{{ route('attendances.index') }}" class="ai-icon"><i class="flaticon-381-notepad"></i><span class="nav-text">Daftar Absensi</span></a></li>
+                            <li><a href="{{ route('attendances.index') }}" class="ai-icon"><i class="flaticon-381-notepad"></i><span class="nav-text">Daftar Absensi</span></a></li>
 						</ul>
-                    </li>
+                    </li >
+                    @can('admin')
+                    <li>
+                        <a href="{{ route('schoolyears.index') }}" class="ai-icon" aria-expanded="false">
+							<i class="flaticon-381-calendar-5"></i>
+							<span class="nav-text">Tahun Ajaran</span>
+						</a>
+					</li>
                     <li>
                         <a href="{{ route('periods.index') }}" class="ai-icon" aria-expanded="false">
+							<i class="flaticon-381-calendar"></i>
+							<span class="nav-text">Periode</span>
+						</a>
+					</li>
+                    @endcan
+                    <li>
+                        <a href="{{ route('recapitulations.index') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-folder-8"></i>
 							<span class="nav-text">Rekap Absensi</span>
 						</a>
 					</li>
                     <li>
-                        <a href="{{ route('permissions.index') }}" class="ai-icon" aria-expanded="false">
+                        <a href="{{ route('leaves.index') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-send-2"></i>
-							<span class="nav-text">Perizinan</span>
+							<span class="nav-text">Permohonan</span><span class="nav-text badge badge-danger text-white badge-sm float-right">
+                            @if(isset($unreadCount))
+                            {{$unreadCount}}
+                            @else
+                            0
+                            @endif
+                            </span>
 						</a>
 					</li>
+                    @can('admin')
                     <li>
                         <a href="{{ route('students.index') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-user-9"></i>
@@ -38,25 +61,18 @@
 						</a>
 					</li>
                     <li>
-                        <a href="{{ route('classrooms.index') }}" class="ai-icon" aria-expanded="false">
-							<i class="flaticon-381-home-2"></i>
-							<span class="nav-text">Kelas</span>
-						</a>
-					</li>
-                    @can('admin')
-                    <li>
                         <a href="{{ route('teachers.index') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-user-8"></i>
 							<span class="nav-text">Wali Kelas</span>
 						</a>
 					</li>
                     @endcan
-                    <li>
+                    <!-- <li>
                         <a href="{{ route('change.edit') }}" class="ai-icon" aria-expanded="false">
 							<i class="flaticon-381-user-7"></i>
 							<span class="nav-text">User Management</span>
 						</a>
-					</li>
+					</li> -->
                     <!-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-television"></i>
 							<span class="nav-text">Apps</span>
@@ -190,9 +206,9 @@
 					</svg>
 					</a>
 				</div> -->
-				<div class="copyright">
-					<p><strong>Chrev - Crypto Admin Dashboard</strong> © 2020 All Rights Reserved</p>
+				<!-- <div class="copyright">
+					<p><strong>Chrev - Crypto Admin Dashboard</strong> © 2022 All Rights Reserved</p>
 					<p>Made with <i class="fa fa-heart"></i> by DexignZone</p>
-				</div>
+				</div> -->
 			</div>
         </div>

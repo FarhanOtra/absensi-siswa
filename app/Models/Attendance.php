@@ -12,9 +12,8 @@ class Attendance extends Model
     protected $fillable = [
         'period_id',
         'date',
-        'month',
         'time',
-        'status',
+        'time_limit',
     ];
 
     public function period()

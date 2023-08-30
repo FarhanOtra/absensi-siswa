@@ -26,13 +26,6 @@
                                             @csrf
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control"  name="username" placeholder="Username" value="{{old('username')}}">
-                                                    @error('username')
-                                                        <span class="text-danger"><small>{{$message}}</small></span>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group col-md-12">
                                                     <label>Email</label>
                                                     <input type="email" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
                                                     @error('email')

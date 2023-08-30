@@ -31,29 +31,22 @@
                                         @csrf
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control"  name="username" placeholder="Username" value="{{$teacher->user->username}}">
-                                                    @error('username')
-                                                        <span class="text-danger"><small>{{$message}}</small></span>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group col-md-12">
                                                     <label>Email</label>
-                                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{$teacher->user->email}}">
+                                                    <input type="email" class="form-control text-black font-weight-bold" name="email" placeholder="Email" value="{{$teacher->user->email}}">
                                                     @error('email')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>NIP</label>
-                                                    <input type="number" class="form-control" name="nip" placeholder="NIP" value="{{$teacher->nip}}">
+                                                    <input type="number" class="form-control text-black font-weight-bold" name="nip" placeholder="NIP" value="{{$teacher->nip}}">
                                                     @error('nip')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>Nama</label>
-                                                    <input type="text" class="form-control" name="name" placeholder="Nama" value="{{$teacher->name}}">
+                                                    <input type="text" class="form-control text-black font-weight-bold" name="name" placeholder="Nama" value="{{$teacher->name}}">
                                                     @error('name')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
@@ -66,7 +59,7 @@
                                                     <div><img class="rounded-circle" width="100" height="100" src="{{ asset('storage/avatar.png') }}" alt=""></div>
                                                     @endif
                                                     <br>
-                                                    <input class="form-control" type="file" id="formFile" name="image">
+                                                    <input class="form-control text-black font-weight-bold" type="file" id="formFile" name="image">
                                                     <input type="hidden" name="imageNow" value="{{$teacher->user->image}}">
                                                 </div>
                                             </div>

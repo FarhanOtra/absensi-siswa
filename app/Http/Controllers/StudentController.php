@@ -30,12 +30,6 @@ class StudentController extends Controller
             $students = Student::all();
         };
 
-        if(Auth()->user()->role == 'teacher'){
-            $teacher_id = Auth()->user()->id;
-            $classroom_id = Classroom::where('teacher_id',$teacher_id)->first('id');
-            $students = Student::where('classroom_id',$classroom_id->id)->get();
-        };
-
         $config_gender = config('attendance.gender');
         return view('student.index', compact('page_title','action','students','config_gender'));
     }
@@ -64,13 +58,12 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users',
             'email' => 'required|unique:users|email',
             'password' => 'required|min:8',
             'nis' => 'required|unique:students',
             'name' => 'required',
             'gender' => 'required',
-            'image' => 'image|mimes:jpg,png,jpeg'
+            'image' => 'image|mimes:jpg,png,jpeg',
         ],
         [
             'required'  => 'Harap bagian :attribute di isi.',
@@ -93,7 +86,6 @@ class StudentController extends Controller
         };
 
         $user = User::create([
-            'username' => $request['username'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
             'role' => 'student',
@@ -105,8 +97,7 @@ class StudentController extends Controller
             'nis' => $request['nis'],
             'name' => $request['name'],
             'gender' => $request['gender'],
-            'classroom_id' => $request['classroom_id'],
-            'image' => $image,
+            'parent_number' => $request['parent_number'],
         ]);
 
         if($request->file('image')){
@@ -139,9 +130,8 @@ class StudentController extends Controller
         $action = 'create';
 
         $student = Student::where('user_id',$id)->first();
-		$classrooms = Classroom::all();
 
-        return view('student.edit', compact('page_title','action','student','classrooms'));
+        return view('student.edit', compact('page_title','action','student'));
     }
 
     /**
@@ -154,17 +144,18 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users,username,'.$id,
             'email' => 'required|email|unique:users,email,'.$id,
             'nis' => 'required|unique:students,nis,'.$id.',user_id',
             'name' => 'required',
             'gender' => 'required',
+            'parent_number' => 'numeric',
             'image' => 'image|mimes:jpg,png,jpeg'
         ],
         [
             'required'  => 'Harap bagian :attribute di isi.',
             'unique'    => ':attribute sudah digunakan',
             'image'     => 'File upload harus berupa image',
+            'numeric'   => 'Format No.telepon Salah',
             'mimes'     => 'Jenis file',
         ]);
 
@@ -176,7 +167,6 @@ class StudentController extends Controller
 
         $user = User::find($id);
  
-        $user->username = $request->username;
         $user->email = $request->email;
         $user->image = $image;
         
@@ -186,7 +176,7 @@ class StudentController extends Controller
             'nis' => $request->nis,
             'name' => $request->name,
             'gender' => $request->gender,
-            'classroom_id' => $request->classroom_id,
+            'parent_number' => $request->parent_number,
         ]);
 
         if($request->file('image')){

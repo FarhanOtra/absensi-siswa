@@ -50,7 +50,6 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users',
             'email' => 'required|unique:users|email',
             'password' => 'required',
             'nip' => 'required|unique:teachers',
@@ -72,7 +71,6 @@ class TeacherController extends Controller
         };
 
         $user = User::create([
-            'username' => $request['username'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
             'role' => 'teacher',
@@ -129,7 +127,6 @@ class TeacherController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'username' => 'required|unique:users,username,'.$id,
             'email' => 'required|email|unique:users,email,'.$id,
             'nip' => 'required|unique:teachers,nip,'.$id.',user_id',
             'name' => 'required',
@@ -150,7 +147,6 @@ class TeacherController extends Controller
 
         $user = User::find($id);
  
-        $user->username = $request->username;
         $user->email = $request->email;
         $user->image = $image;
         
@@ -166,7 +162,7 @@ class TeacherController extends Controller
             Storage::delete($request->imageNow);
         }
 
-        return redirect()->route('teachers.index')->with('toast_success','Berhasil Dirubah');
+        return redirect()->route('teachers.index')->with('toast_success','Data Guru Berhasil Diubah');
     }
 
     /**

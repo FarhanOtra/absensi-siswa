@@ -27,6 +27,7 @@
         }
     </style>
     <title>Rekapitulasi Absensi {{$period->years}}</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon.png') }}">
   </head>
   <body style="margin: 0.2in 0.5in 0.2in 0.5in;">
     <div>
@@ -37,7 +38,7 @@
       <div class="text-center" style="margin-left: -200px">
               <h3><b>REKAPITULASI ABSENSI SISWA</b></h3>
               <h4><b>SMK NEGERI 7 PADANG</b></h4>
-              <h4><b>TAHUN AJARAN {{$period->years}}</b></h4>
+              <h4><b>TAHUN AJARAN {{$period->year->year_start}}/{{$period->year->year_end}}</b></h4>
       </div>
     </div>
     <div>
@@ -48,10 +49,10 @@
       <div class="col-12">
         <table>
           <tr>
-            <td>Kelas</td><td>:  {{$classroom->name}}</td>
+            <td>Kelas</td><td>:  {{$classroom->grade}} {{$classroom->name}}</td>
           </tr>
           <tr>
-            <td>Wali Kelas</td><td>: {{$classroom->teacher->name}}</td>
+            <td>Wali Kelas</td><td>: {{$classroom->teacher->name ?? "-"}}</td>
           </tr>
           <tr>
             <td>Semester</td><td>: {{$period->semester}}</td>
@@ -66,25 +67,27 @@
         <thead>
           <tr>
             <th scope="col" rowspan="2" class="align-middle text-center" style="width : 1%">No.</th>
-            <th scope="col" rowspan="2" class="align-middle text-center" style="width: 10%">NIS</th>
-            <th scope="col" rowspan="2" class="align-middle text-center">Nama</th>
+            <th scope="col" rowspan="2" class="align-middle text-center" style="width: 2%">NIS</th>
+            <th scope="col" rowspan="2" class="align-middle text-center" style="min-width: 20%">Nama</th>
             <th scope="col" rowspan="2" class="align-middle text-center" style="width : 2%">L/P</th>
             @foreach($months as $month)
-            <th scope="col" colspan="4" class="align-middle text-center">{{$config_month[$month->month]}}</th>
+            <th scope="col" colspan="5" class="align-middle text-center">{{$config_month[$month->month]}}</th>
             @endforeach
-            <th scope="col" colspan="4" class="align-middle text-center">Total</th>
+            <th scope="col" colspan="5" class="align-middle text-center">Total</th>
           </tr>
           <tr class="text-center">
             @foreach($months as $month)
-              <th class="bg-success" scope="col" style="width : 2%">H</th>
-              <th class="bg-info" scope="col" style="width : 2%">S</th>
-              <th class="bg-warning" scope="col" style="width : 2%">I</th>
-              <th class="bg-danger" scope="col" style="width : 2%">A</th>
+              <th class="" scope="col" style="width : 2%">H</th>
+              <th class="" scope="col" style="width : 2%">S</th>
+              <th class="" scope="col" style="width : 2%">I</th>
+              <th class="" scope="col" style="width : 2%">A</th>
+              <th class="" scope="col" style="width : 2%">B</th>
             @endforeach
               <th class="bg-success" scope="col" style="width : 2%">H</th>
               <th class="bg-info" scope="col" style="width : 2%">S</th>
               <th class="bg-warning" scope="col" style="width : 2%">I</th>
               <th class="bg-danger" scope="col" style="width : 2%">A</th>
+              <th class="" scope="col" style="width : 2%">B</th>
           </tr>
         </thead>
         <tbody> 
@@ -99,17 +102,19 @@
               $s=0;
               $i=0;
               $a=0;
+              $b=0;
               $total_h=0;
               $total_s=0;
               $total_i=0;
               $total_a=0;
+              $total_b=0;
             @endphp
           @foreach($months as $month)
             @foreach($dates as $date)
               @php
               $j=0;
               @endphp
-             @if($month->month == $date->month)
+             @if($month->month == \Carbon\Carbon::parse($date->date)->format('m'))
               @foreach($p['desc'] as $q)
                 @if($date->date == $q['date'])
                   @php
@@ -139,6 +144,11 @@
                           $a++;
                           @endphp
                         @break
+                        @case(5)
+                          @php
+                          $b++;
+                          @endphp
+                        @break
                       @endswitch
                       @endif
                     @endif
@@ -152,25 +162,29 @@
               @endif
              @endif 
             @endforeach
-            <td class="bg-success">{{$h}}</td>
-            <td class="bg-info">{{$s}}</td>
-            <td class="bg-warning">{{$i}}</td>
-            <td class="bg-danger">{{$a}}</td>
+            <td class="">{{$h}}</td>
+            <td class="">{{$s}}</td>
+            <td class="">{{$i}}</td>
+            <td class="">{{$a}}</td>
+            <td class="">{{$b}}</td>
             @php
              $total_h=$total_h+$h;
              $total_s=$total_s+$s;
              $total_i=$total_i+$i;
              $total_a=$total_a+$a;
+             $total_b=$total_b+$b;
              $h=0;
              $s=0;
              $i=0;
              $a=0;
+             $b=0;
             @endphp
           @endforeach
             <td class="bg-success">{{$total_h}}</td>
             <td class="bg-info">{{$total_s}}</td>
             <td class="bg-warning">{{$total_i}}</td>
             <td class="bg-danger">{{$total_a}}</td>
+            <td class="">{{$total_b}}</td>
            </tr>
         @endforeach
         </tbody>

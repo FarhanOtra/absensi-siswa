@@ -15,7 +15,7 @@
                 </div>
                 <!-- row -->
                 <div class="row">
-                    <div class="col-xl-6 col-lg-12">
+                    <div class="col-xl-8 col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Edit Absensi</h4>
@@ -30,10 +30,10 @@
                                                     <label>Tahun Ajaran</label>
                                                     <select class="form-control" id="sel1" name="period_id">
                                                         @if(isset($attendance->period_id))
-                                                        <option selected value="{{$attendance->period_id}}">Tahun {{$attendance->period->years}} - Semester {{$attendance->period->semester}}</option>
+                                                        <option selected value="{{$attendance->period_id}}">Tahun {{$attendance->period->year->year_start}}/{{$attendance->period->year->year_end}} - Semester {{$attendance->period->semester}}</option>
                                                         @endif
                                                         @foreach($periods as $period)
-                                                        <option value="{{$period->id}}">Tahun {{$period->years}} - Semester {{$period->semester}}</option>
+                                                        <option value="{{$period->id}}">Tahun {{$attendance->period->year->year_start}}/{{$attendance->period->year->year_end}} - Semester {{$period->semester}}</option>
                                                         @endforeach
                                                     </select>
                                                     @error('period_id')
@@ -41,27 +41,29 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <p class="mb-1">Tanggal</p>
-                                                            <input name="date" class="datepicker-default form-control" dateFormat="yy-mm-dd" id="datepicker" value="{{ Carbon\Carbon::parse($attendance->date)->toFormattedDateString()}}">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>Jam Masuk</label>
-                                                            <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                                                                <input type="text" class="form-control" name="time" value="{{$attendance->time}}"> <span class="input-group-append"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    <p class="mb-1">Tanggal</p>
+                                                    <input name="date" class="datepicker-default form-control" dateFormat="yy-mm-dd" id="datepicker" value="{{ Carbon\Carbon::parse($attendance->date)->format('d-m-Y')}}">
                                                     @error('date')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Jam Masuk</label>
+                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                                        <input type="text" class="form-control" name="time" value="{{$attendance->time}}"> <span class="input-group-append"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Batas Waktu</label>
+                                                    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                                        <input type="text" class="form-control" name="time_limit" value="{{$attendance->time_limit}}"> <span class="input-group-append"><span class="input-group-text"><i class="fa fa-clock-o"></i></span></span>
+                                                    </div>
+                                                    </div>
                                                     @error('time')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                             </div>
-                                            <br>
                                             <button type="submit" class="btn btn-primary">Edit</button>
                                         </form>
                                     </div>

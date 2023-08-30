@@ -11,12 +11,25 @@ class Student_attendance extends Model
 
     protected $fillable = [
         'attendance_id',
-        'student_id',
-        'status'
+        'student_classroom_id',
+        'status',
+        'time_in',
+        'modified_by',
+        'notes'
     ];
 
-    public function student()
+    public function student_classroom()
     {
-        return $this->belongsTo(Student::class,'student_id','user_id');
+        return $this->belongsTo(Student_classroom::class,'student_classroom_id','id');
+    }
+
+    public function modified()
+    {
+        return $this->belongsTo(User::class,'modified_by','id');
+    }
+
+    public function leave()
+    {
+        return $this->belongsToMany(Leave::class, 'leave_id');
     }
 }

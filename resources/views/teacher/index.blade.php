@@ -19,7 +19,7 @@
                                 <h4 class="card-title">Daftar Wali Kelas</h4>
                                 <a href="{{ Route('teachers.create') }}">
                                     <button type="button" class="btn btn-rounded btn-primary"><span class="btn-icon-left text-primary"><i class="fa fa-plus color-primary"></i>
-                                    </span>Tambah Wali Kelas</button>
+                                    </span>Tambah</button>
                                 </a>
                             </div>
                             <div class="card-body">
@@ -30,7 +30,6 @@
                                                 <th></th>
                                                 <th>NIP</th>
                                                 <th>Nama</th>
-                                                <th>Username</th>
                                                 <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
@@ -45,7 +44,6 @@
                                                 @endif
                                                 <td>{{$teacher->nip}}</td>
                                                 <td>{{$teacher->name}}</td>
-                                                <td>{{$teacher->user->username}}</td>
                                                 <td>{{$teacher->user->email}}</td>
                                                 <td>
 													<div class="d-flex">

@@ -26,13 +26,6 @@
                                             @csrf
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control"  name="username" placeholder="Username" value="{{old('username')}}">
-                                                    @error('username')
-                                                        <span class="text-danger"><small>{{$message}}</small></span>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group col-md-12">
                                                     <label>Email</label>
                                                     <input type="email" class="form-control" name="email" placeholder="Email" value="{{old('email')}}">
                                                     @error('email')
@@ -72,16 +65,9 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Kelas</label>
-                                                    <select class="form-control" id="sel1" name="classroom_id">
-                                                        <option selected value="">Pilih Kelas</option>
-                                                        @forelse($classrooms as $classroom)
-                                                        <option value="{{$classroom->id}}">{{$classroom->name}}</option>
-                                                        @empty
-                                                        <option selected value="">Tidak Ada Kelas</option>
-                                                        @endforelse
-                                                    </select>
-                                                    @error('classroom_id')
+                                                    <label>No. Telepon Orangtua</label>
+                                                    <input type="number" class="form-control" name="parent_number" placeholder="+62" value="{{old('parent_number')}}">
+                                                    @error('parent_number')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>

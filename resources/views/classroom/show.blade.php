@@ -8,7 +8,8 @@
 			<div class="container-fluid">
                 <div class="page-titles">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item "><a href="{{Route('classrooms.index')}}">Kelas</a></li>
+						<li class="breadcrumb-item "><a href="{{Route('schoolyears.index')}}">Tahun Ajaran</a></li>
+						<li class="breadcrumb-item "><a href="{{Route('classrooms.year',[$classroom->school_year_id])}}">Daftar Kelas</a></li>
 						<li class="breadcrumb-item active"><a href="javascript:void(0)">Detail Kelas</a></li>
 					</ol>
                 </div>
@@ -18,6 +19,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title-lg">Detail Kelas</h3>
+                                @can('admin')
                                 <div>
                                     <form action="{{ Route('classrooms.destroy',[$classroom->id]) }}" method="post">
                                     <a href="{{ Route('classrooms.edit',[$classroom->id]) }}">
@@ -30,9 +32,25 @@
                                         </span>Hapus</button>
                                     </form>
                                 </div>
+                                @endcan
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <div class="col-xl-2 col-lg-6 col-sm-6">
+                                        <div class="widget-stat card bg-primary">
+                                            <div class="card-body p-4">
+                                                <div class="media">
+                                                    <span class="mr-3">
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                    <div class="media-body text-white text-right">
+                                                        <p class="mb-1">Tahun Ajaran</p>
+                                                        <h5 class="text-white">{{$classroom->year->year_start}}/{{$classroom->year->year_end}}</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-xl-3 col-lg-6 col-sm-6">
                                         <div class="widget-stat card bg-primary">
                                             <div class="card-body p-4">
@@ -42,7 +60,7 @@
                                                     </span>
                                                     <div class="media-body text-white text-right">
                                                         <p class="mb-1">Nama Kelas</p>
-                                                        <h4 class="text-white">{{$classroom->name}}</h4>
+                                                        <h5 class="text-white">{{$classroom->grade}} {{$classroom->name}}</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,13 +79,13 @@
                                                     </span>
                                                     <div class="media-body text-white text-right">
                                                         <p class="mb-1">Wali Kelas</p>
-                                                        <h4 class="text-white">{{$classroom->teacher->name ?? '-'}}</h4>
+                                                        <h5 class="text-white">{{$classroom->teacher->name ?? '-'}}</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-6 col-sm-6">
+                                    <div class="col-xl-2 col-lg-6 col-sm-6">
                                         <div class="widget-stat card bg-info">
                                             <div class="card-body p-4">
                                                 <div class="media">
@@ -76,13 +94,13 @@
                                                     </span>
                                                     <div class="media-body text-white text-right">
                                                         <p class="mb-1">Laki Laki</p>
-                                                        <h3 class="text-white">{{$l}}</h3>
+                                                        <h5 class="text-white">{{$l}}</h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-lg-6 col-sm-6">
+                                    <div class="col-xl-2 col-lg-6 col-sm-6">
                                         <div class="widget-stat card bg-secondary">
                                             <div class="card-body p-4">
                                                 <div class="media">
@@ -91,7 +109,7 @@
                                                     </span>
                                                     <div class="media-body text-white text-right">
                                                         <p class="mb-1">Perempuan</p>
-                                                        <h3 class="text-white">{{$p}}</h3>
+                                                        <h5 class="text-white">{{$p}}</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,8 +175,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                    <button type="button" class="btn btn-danger light" data-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary">Tambah</button>
                                                 </div>
                                                 </form>
                                             </div>
@@ -175,7 +193,6 @@
                                                 <th>NIS</th>
                                                 <th>Nama</th>
                                                 <th>Jenis Kelamin</th>
-                                                <th>Username</th>
                                                 <th>Email</th>
                                                 <th>Action</th>
                                             </tr>
@@ -191,11 +208,10 @@
                                                 <td>{{$student->nis}}</td>
                                                 <td>{{$student->name}}</td>
                                                 <td>{{$config_gender[$student->gender]}}</td>
-                                                <td>{{$student->user->username}}</td>
                                                 <td>{{$student->user->email}}</td>
                                                 <td>
 													<div class="d-flex">
-                                                        <a href="{{ route('classrooms.destroyStudent',[$student->user->id])}}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Yakin ingin menghapus data?')"><i class="fa fa-trash"></i></a>        
+                                                        <a href="{{ route('classrooms.destroyStudent',[$student->id])}}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Yakin ingin menghapus data?')"><i class="fa fa-trash"></i></a>        
                                                     </div>												
 												</td>												
                                             </tr>

@@ -9,7 +9,6 @@
 			<div class="container-fluid">
                 <div class="page-titles">
 					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="{{Route('classrooms.index')}}">Kelas</a></li>
 						<li class="breadcrumb-item active"><a href="javascript:void(0)">Tambah Kelas</a></li>
 					</ol>
                 </div>
@@ -24,6 +23,18 @@
                                     <div class="basic-form">
                                         <form method="post" class="form-valide" action="{{ Route('classrooms.store') }}" enctype="multipart/form-data">
                                             @csrf
+                                            <div class="form-group">
+                                                <label>Tingkat</label>
+                                                <select class="form-control" id="sel1" name="grade" value="{{old('grade')}}">
+                                                    <option value="">Pilih Tingkat</option>
+                                                    <option value="X">X</option>
+                                                    <option value="XI">XI</option>
+                                                    <option value="XII">XII</option>
+                                                </select>
+                                                @error('grade')
+                                                    <span class="text-danger"><small>{{$message}}</small></span>
+                                                @enderror
+                                            </div>
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <label>Nama Kelas</label>
@@ -47,6 +58,7 @@
                                                     <span class="text-danger"><small>{{$message}}</small></span>
                                                 @enderror
                                             </div>
+                                            <input type="hidden" name="school_year_id" value="{{$year}}">
                                             <br>
                                             <button type="submit" class="btn btn-primary">Tambah</button>
                                         </form>

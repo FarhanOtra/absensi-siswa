@@ -5,17 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class Student_classroom extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'student_id',
+        'school_year_id',
+        'classroom_id',
+    ];
 
     public function student()
     {
         return $this->belongsTo(Student::class,'student_id','user_id');
     }
 
-    public function attendance()
+    public function classroom()
     {
-        return $this->belongsTo(Attendance::class,'attendance_id','id');
+        return $this->belongsTo(Classroom::class,'classroom_id','id');
     }
 }

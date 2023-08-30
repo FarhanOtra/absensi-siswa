@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Classroom;
 use App\Models\Student;
+use App\Models\School_year;
+use App\Models\Student_classroom;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -25,16 +27,20 @@ class ClassroomController extends Controller
         $page_title = 'Kelas';
         $action = __FUNCTION__;
 
-        if(Auth()->user()->role == 'admin'){
-            $classrooms = Classroom::all();
-        };
+        $schoolyears = School_year::orderBy('year_start','DESC')->get();
+   
+        return view('classroom.index', compact('page_title','action','schoolyears'));
+    }
 
-        if(Auth()->user()->role == 'teacher'){
-            $teacher_id = Auth()->user()->id;
-            $classrooms = Classroom::where('teacher_id',$teacher_id)->get();
-        };
-		
-        return view('classroom.index', compact('page_title','action','classrooms'));
+    public function year($id)
+    {
+        $page_title = 'Kelas';
+        $action = 'index';
+
+        $classrooms = Classroom::where('school_year_id',$id)->get();
+        $year = School_year::find($id);
+   
+        return view('classroom.year', compact('page_title','action','classrooms','year'));
     }
 
     /**
@@ -42,15 +48,15 @@ class ClassroomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create($year)
+    { 
         $page_title = 'Kelas';
         $action = 'create';
 
-        $teacher_id = Classroom::pluck('teacher_id')->all();
+        $teacher_id = Classroom::where('school_year_id',$year)->pluck('teacher_id')->all();
         $teachers = Teacher::whereNotIn('user_id', $teacher_id)->get();
 		
-        return view('classroom.create', compact('page_title','action','teachers'));
+        return view('classroom.create', compact('page_title','action','teachers','year'));
     }
 
     /**
@@ -62,22 +68,23 @@ class ClassroomController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:classrooms',
-            'teacher_id' => 'required|unique:classrooms',
+            'name' => 'required',
+            'grade' => 'required',
         ],
         [
             'required'  => 'Harap bagian :attribute di isi.',
             'teacher_id.required'  => 'Harap Pilih Guru Wali Kelas.',
             'name.unique'    => ':attribute sudah digunakan',
-            'teacher_id.unique'    => 'Guru sudah menjadi Wali Kelas',
         ]);
 
         $classroom = Classroom::create([
+            'grade' => $request['grade'],
             'name' => $request['name'],
             'teacher_id' => $request['teacher_id'],
+            'school_year_id' => $request['school_year_id'],
         ]);
 
-        return redirect()->route('classrooms.index')->with('toast_success','Kelas Berhasil Ditambahkan');
+        return redirect()->route('classrooms.year',[$request['school_year_id']])->with('toast_success','Kelas Berhasil Ditambahkan');
     }
 
     /**
@@ -92,8 +99,12 @@ class ClassroomController extends Controller
         $action = 'index';
 
         $classroom = Classroom::find($id);
-        $students_all = Student::where('classroom_id','!=',$id)->orWhere('classroom_id','=',null)->get();
-        $students = Student::where('classroom_id',$id)->get();
+
+        $students = Student::join('student_classrooms','student_id','user_id')->where('classroom_id',$id)->get();
+
+        // dd($students);
+        $check = Student_classroom::join('classrooms','classroom_id','classrooms.id')->where('classrooms.school_year_id',$classroom->school_year_id)->pluck('student_id');
+        $students_all = Student::whereNotIn('user_id',$check)->get();
         $config_gender = config('attendance.gender');
         $l = $students->where('gender','L')->count();
         $p = $students->where('gender','P')->count();
@@ -114,7 +125,7 @@ class ClassroomController extends Controller
 
         $classroom = Classroom::where('id',$id)->first();
 
-        $teacher_id = Classroom::pluck('teacher_id')->all();
+        $teacher_id = Classroom::where('teacher_id','!=',null)->pluck('teacher_id')->all();
         $teachers = Teacher::whereNotIn('user_id', $teacher_id)->get();
 		
         return view('classroom.edit', compact('page_title','action','classroom','teachers'));
@@ -130,24 +141,24 @@ class ClassroomController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'required|unique:classrooms,name,'.$id,
-            'teacher_id' => 'required|unique:classrooms,teacher_id,'.$id,
+            'name' => 'required',
+            'grade' => 'required',
         ],
         [
             'required'  => 'Harap bagian :attribute di isi.',
             'teacher_id.required'  => 'Harap Pilih Guru Wali Kelas.',
-            'name.unique'    => ':attribute sudah digunakan',
-            'teacher_id.unique'    => 'Guru sudah menjadi Wali Kelas',
+            'name.unique'    => ':attribute sudah digunakan',   
         ]);
 
         $classroom = Classroom::find($id);
  
+        $classroom->grade = $request->grade;
         $classroom->name = $request->name;
         $classroom->teacher_id = $request->teacher_id;
         
         $classroom->save();
 
-        return redirect()->route('classrooms.show',[$id])->with('toast_success','Berhasil Dirubah');
+        return redirect()->route('classrooms.show',[$id])->with('toast_success','Berhasil Diubah');
     }
 
     /**
@@ -159,20 +170,27 @@ class ClassroomController extends Controller
     public function destroy($id)
     {
         $classroom = Classroom::find($id);
+        $year = $classroom->school_year_id;
         $classroom->delete();
-        return redirect()->route('classrooms.index')->with('toast_success','Berhasil Dihapus');
+        return redirect()->route('classrooms.year',[$year])->with('toast_success','Berhasil Dihapus');
     }
 
     public function addStudent(Request $request, $id)
     {
-        $student = Student::whereIn('user_id', $request->data)->update(['classroom_id' => $id]);
-        return back()->with('toast_success','Berhasil Ditambahkan');
+        $students = Student::whereIn('user_id', $request->data)->get();
+        foreach($students as $student){
+            Student_classroom::create([
+                'student_id' => $student->user_id,
+                'classroom_id' => $id,
+            ]);
+        }
+        return back()->with('toast_success','Siswa Berhasil Ditambahkan');
     }
 
     public function destroyStudent($id)
     {
-        $student = Student::where('user_id',$id)->update(['classroom_id' => null]);
+        Student_classroom::destroy($id);
 
-        return back()->with('toast_success','Berhasil Dihapus');
+        return back()->with('toast_success','Siswa Berhasil Dihapus');
     }
 }

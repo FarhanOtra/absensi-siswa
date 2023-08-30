@@ -10,7 +10,13 @@ class Period extends Model
     use HasFactory;
 
     protected $fillable = [
-        'years',
+        'school_year_id',
         'semester',
+        'active'
     ];
+
+    public function year()
+    {
+        return $this->belongsTo(School_year::class,'school_year_id','id');
+    }
 }

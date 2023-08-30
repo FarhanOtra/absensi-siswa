@@ -37,7 +37,7 @@
       <div class="text-center" style="margin-left: -200px">
               <h3><b>REKAPITULASI ABSENSI SISWA</b></h3>
               <h4><b>SMK NEGERI 7 PADANG</b></h4>
-              <h4><b>TAHUN AJARAN {{$period->years}}</b></h4>
+              <h4><b>TAHUN AJARAN {{$period->year->year_start}}/{{$period->year->year_end}}</b></h4>
       </div>
     </div>
     <div>
@@ -48,13 +48,16 @@
       <div class="col-12">
         <table>
           <tr>
-            <td>Kelas</td><td>:  {{$classroom->name}}</td>
+            <td>Kelas</td><td>:  {{$classroom->grade}} {{$classroom->name}}</td>
           </tr>
           <tr>
-            <td>Wali Kelas</td><td>: {{$classroom->teacher->name}}</td>
+            <td>Wali Kelas</td><td>: {{$classroom->teacher->name ?? "-"}}</td>
           </tr>
           <tr>
             <td>Semester</td><td>: {{$period->semester}}</td>
+          </tr>
+          <tr>
+            <td>Bulan</td><td>: {{$config_month[$month]}}</td>
           </tr>
         </table>
       </div>
@@ -66,11 +69,11 @@
         <thead>
           <tr>
             <th scope="col" rowspan="2" class="align-middle text-center" style="width : 1%">No.</th>
-            <th scope="col" rowspan="2" class="align-middle text-center" style="width: 10%">NIS</th>
-            <th scope="col" rowspan="2" class="align-middle text-center">Nama</th>
+            <th scope="col" rowspan="2" class="align-middle text-center" style="width: 2%">NIS</th>
+            <th scope="col" rowspan="2" class="align-middle text-center" style="min-width: 10%">Nama</th>
             <th scope="col" rowspan="2" class="align-middle text-center" style="width : 2%">L/P</th>
             <th scope="col" colspan="{{$dates->count()}}" class="align-middle text-center">{{$config_month[$month]}}</th>
-            <th scope="col" colspan="4" class="align-middle text-center">Keterangan</th>
+            <th scope="col" colspan="5" class="align-middle text-center">Keterangan</th>
           </tr>
           <tr class="text-center">
             @foreach($dates as $date)
@@ -80,6 +83,7 @@
             <th class="bg-info" scope="col" style="width : 2%">S</th>
             <th class="bg-warning" scope="col" style="width : 2%">I</th>
             <th class="bg-danger" scope="col" style="width : 2%">A</th>
+            <th class="" scope="col" style="width : 2%">B</th>
           </tr>
         </thead>
         <tbody> 
@@ -94,6 +98,7 @@
               $s=0;
               $i=0;
               $a=0;
+              $b=0;
             @endphp
             @foreach($dates as $date)
               @php
@@ -132,6 +137,12 @@
                           $a++;
                           @endphp
                         @break
+                        @case(5)
+                          <td>B</td>
+                          @php
+                          $b++;
+                          @endphp
+                        @break
                       @endswitch
                       @endif
                     @endif
@@ -149,6 +160,7 @@
             <td class="bg-info">{{$s}}</td>
             <td class="bg-warning">{{$i}}</td>
             <td class="bg-danger">{{$a}}</td>
+            <td class="">{{$b}}</td>
           </tr>
           @endforeach
         </tbody>
@@ -158,8 +170,8 @@
   
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
   </body>
 </html>

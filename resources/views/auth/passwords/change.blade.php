@@ -9,7 +9,7 @@
                     <div class="col-xl-6 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Change Password</h4>
+                                <h4 class="card-title">Tukar Password</h4>
                             </div>
                                 <div class="card-body">
                                     <div class="basic-form">
@@ -17,29 +17,29 @@
                                             @csrf
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Current Password</label>
-                                                    <input type="password" class="form-control"  name="current_password" placeholder="Current Password">
+                                                    <label>Password Lama</label>
+                                                    <input type="password" class="form-control"  name="current_password" placeholder="Password Lama">
                                                     @error('current_password')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Password</label>
-                                                    <input type="password" class="form-control"  name="password" placeholder="Password">
+                                                    <label>Password Baru</label>
+                                                    <input type="password" class="form-control"  name="password" placeholder="Password Baru">
                                                     @error('password')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Confirm Password</label>
-                                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password">
+                                                    <label>Konfirmasi Password</label>
+                                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Konfirmasi Password Baru">
                                                     @error('password_confirmation')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                             </div>
                                             <br>
-                                            <button type="submit" class="btn btn-primary">Reset Password</button>
+                                            <button type="submit" class="btn btn-primary">Simpan</button>
                                         </form> 
                                     </div>
                                 </div>

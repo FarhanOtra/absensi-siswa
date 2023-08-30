@@ -31,36 +31,29 @@
                                             @csrf
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control"  name="username" placeholder="Username" value="{{$student->user->username}}">
-                                                    @error('username')
-                                                        <span class="text-danger"><small>{{$message}}</small></span>
-                                                    @enderror
-                                                </div>
-                                                <div class="form-group col-md-12">
                                                     <label>Email</label>
-                                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{$student->user->email}}">
+                                                    <input type="email" class="form-control text-black font-weight-bold" name="email" placeholder="Email" value="{{$student->user->email}}">
                                                     @error('email')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>NIS</label>
-                                                    <input type="number" class="form-control" name="nis" placeholder="NIS" value="{{$student->nis}}">
+                                                    <input type="number" class="form-control text-black font-weight-bold" name="nis" placeholder="NIS" value="{{$student->nis}}">
                                                     @error('nis')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>Nama</label>
-                                                    <input type="text" class="form-control" name="name" placeholder="Nama" value="{{$student->name}}">
+                                                    <input type="text" class="form-control text-black font-weight-bold" name="name" placeholder="Nama" value="{{$student->name}}">
                                                     @error('name')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>Jenis Kelamin</label>
-                                                    <select class="form-control" id="sel1" name="gender">
+                                                    <select class="form-control text-black font-weight-bold" id="sel1" name="gender">
                                                     @if(isset($student->gender))
                                                         <option selected value="{{$student->gender}}">
                                                             @if($student->gender == 'P')
@@ -78,21 +71,9 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Kelas</label>
-                                                    <select class="form-control" id="sel1" name="classroom_id">
-
-                                                    @if(isset($student->classroom_id))
-                                                        <option selected value="{{$student->classroom_id}}">{{$student->classroom->name}}</option>
-                                                    @endif
-
-                                                    @forelse($classrooms as $classroom)
-                                                    <option value="{{$classroom->id}}">{{$classroom->name}}</option>
-                                                    @empty
-                                                    <option selected value="">Tidak Ada Kelas</option>
-                                                    @endforelse
-
-                                                    </select>
-                                                    @error('classroom_id')
+                                                    <label>No. Telepon Orangtua</label>
+                                                    <input type="text" class="form-control text-black font-weight-bold" name="parent_number" placeholder="+62" value="{{$student->parent_number}}">
+                                                    @error('parent_number')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
                                                 </div>
@@ -104,7 +85,7 @@
                                                     <div><img class="rounded-circle" width="100" height="100" src="{{ asset('storage/avatar.png') }}" alt=""></div>
                                                     @endif
                                                     <br>
-                                                    <input class="form-control" type="file" id="formFile" name="image">
+                                                    <input class="form-control text-black font-weight-bold" type="file" id="formFile" name="image">
                                                     <input type="hidden" name="imageNow" value="{{$student->user->image}}">
                                                 </div>
                                             </div>

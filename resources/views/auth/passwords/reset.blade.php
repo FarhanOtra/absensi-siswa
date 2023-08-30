@@ -27,8 +27,8 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Confirm Password</label>
-                                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" value="{{old('password-confirmation')}}">
+                                                    <label>Konfirmasi Password</label>
+                                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Konfirmasi Password" value="{{old('password-confirmation')}}">
                                                     @error('password_confirmation')
                                                         <span class="text-danger"><small>{{$message}}</small></span>
                                                     @enderror
